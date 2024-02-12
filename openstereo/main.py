@@ -59,9 +59,12 @@ def worker(rank, world_size, opt, cfgs):
     trainer_cfg = cfgs['trainer_cfg']
     scope = opt.scope
     Model = getattr(models, model_cfg['model'])
-    model = Model(cfgs)
-    Trainer = model.Trainer
-
+    #  models : <module 'modeling.models' from '/home/bj/data/dnn/torch/OpenStereo/openstereo/modeling/models/__init__.py'>
+    #  Model :               <class 'modeling.models.psmnet.model.PSMNet'>
+    model = Model(cfgs) # PSMnet
+     
+    Trainer = model.Trainer #<class 'modeling.models.psmnet.model.PSMNetTrainer'>
+     
     if is_dist and trainer_cfg.get('sync_bn', False):
         msg_mgr.log_info('convert batch norm to sync batch norm')
         model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model)
